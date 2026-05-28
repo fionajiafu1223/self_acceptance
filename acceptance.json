@@ -49,7 +49,7 @@
     { "id": "relations_006", "category": "relations", "desire": "approval", "question": "你能允许别人对你失望，而你没有办法让每个人都满意吗？" },
     { "id": "relations_007", "category": "relations", "desire": "control",  "question": "你能允许你爱的人，做一个你不认同的决定吗？" },
     { "id": "relations_008", "category": "relations", "desire": "approval", "question": "你能允许自己，不被某个重要的人看见吗？" },
-    { "id": "relations_009", "category": "relations", "desire": "approval", "question": "你能允许自己说"不"，即便对方因此不高兴吗？" },
+    { "id": "relations_009", "category": "relations", "desire": "approval", "question": "你能允许自己说不，即便对方因此不高兴吗？" },
     { "id": "relations_010", "category": "relations", "desire": "control",  "question": "你能允许关系里的某些事，永远得不到答案吗？" },
     { "id": "relations_011", "category": "relations", "desire": "approval", "question": "你能允许自己，不是一个足够好的伴侣、朋友或子女吗？" },
     { "id": "relations_012", "category": "relations", "desire": "control",  "question": "你能允许你无法修复的那段关系，就让它破着吗？" },
