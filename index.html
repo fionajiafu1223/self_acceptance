@@ -9,7 +9,7 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%; height: 100%;
-  background: #fef0e4;
+  background: #fde4c8;
   display: block;
   overflow: hidden;
 }
@@ -18,7 +18,7 @@ input, select, textarea, button { font-size: 16px; }
 .card {
   position: relative; z-index: 1;
   width: 100vw; height: 100vh;
-  background: linear-gradient(170deg, #fff8f2 0%, #feeee2 45%, #fcdeca 100%);
+  background: linear-gradient(170deg, #fff0e0 0%, #fdd8aa 45%, #f8c080 100%);
 }
 
 .app-title {
@@ -27,11 +27,11 @@ input, select, textarea, button { font-size: 16px; }
 }
 .app-title h1 {
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
-  letter-spacing: 5px; color: rgba(150,70,15,0.55); font-weight: 400;
+  letter-spacing: 5px; color: rgba(160,75,10,0.70); font-weight: 400;
 }
 .app-title p {
   font-size: 8px; letter-spacing: 2.5px;
-  color: rgba(150,70,15,0.32); margin-top: 3px;
+  color: rgba(160,75,10,0.42); margin-top: 3px;
 }
 
 .svg-canvas {
@@ -44,7 +44,7 @@ input, select, textarea, button { font-size: 16px; }
   top: 17%;
   text-align: center;
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; letter-spacing: 2px;
-  color: rgba(130,60,10,0.75); line-height: 1.9;
+  color: rgba(140,60,5,0.82); line-height: 1.9;
   z-index: 30; opacity: 0; pointer-events: none;
   transition: opacity 1.5s ease;
   padding: 0 36px;
@@ -93,7 +93,7 @@ input, select, textarea, button { font-size: 16px; }
 
 .ripple-el {
   position: absolute; border-radius: 50%; pointer-events: none; z-index: 6;
-  background: radial-gradient(circle, rgba(220,130,40,0.38) 0%, rgba(220,130,40,0) 70%);
+  background: radial-gradient(circle, rgba(240,120,20,0.45) 0%, rgba(240,120,20,0) 70%);
   animation: rippleRelease 1.5s ease-out forwards;
   transform-origin: center center;
 }
@@ -200,7 +200,7 @@ input, select, textarea, button { font-size: 16px; }
 
 #loadingOverlay {
   position: absolute; inset: 0; z-index: 60;
-  background: linear-gradient(170deg, #fff8f2 0%, #feeee2 45%, #fcdeca 100%);
+  background: linear-gradient(170deg, #fff0e0 0%, #fdd8aa 45%, #f8c080 100%);
   display: flex; align-items: center; justify-content: center;
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
   letter-spacing: 3px; color: rgba(150,70,15,0.65);
@@ -228,23 +228,23 @@ input, select, textarea, button { font-size: 16px; }
 
       <!-- heart glow: orange -->
       <radialGradient id="hgOuter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ffaa50" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#c06010" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ff9020" stop-opacity="0.35"/>
+        <stop offset="100%" stop-color="#c05500" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgMid" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ff9030" stop-opacity="0.40"/>
-        <stop offset="55%" stop-color="#d07010" stop-opacity="0.16"/>
-        <stop offset="100%" stop-color="#904000" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ff7800" stop-opacity="0.55"/>
+        <stop offset="55%" stop-color="#d06000" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#903800" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgInner" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ffb860" stop-opacity="0.68"/>
-        <stop offset="45%" stop-color="#e08020" stop-opacity="0.38"/>
-        <stop offset="100%" stop-color="#a05010" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ffa040" stop-opacity="0.78"/>
+        <stop offset="45%" stop-color="#e07010" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#a04800" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgCore" cx="42%" cy="38%" r="55%">
-        <stop offset="0%" stop-color="#fff0d8" stop-opacity="0.85"/>
-        <stop offset="45%" stop-color="#ffaa50" stop-opacity="0.55"/>
-        <stop offset="100%" stop-color="#c06020" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#fff0d0" stop-opacity="0.90"/>
+        <stop offset="45%" stop-color="#ff9830" stop-opacity="0.65"/>
+        <stop offset="100%" stop-color="#c05800" stop-opacity="0"/>
       </radialGradient>
     </defs>
 
