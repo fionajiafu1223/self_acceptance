@@ -288,7 +288,7 @@ function showNextQuestion() {
 function onAnswer() {
   if (LOCKED) return; LOCKED = true;
   hideBtn('btnCan'); hideBtn('btnCannot'); hideEl('questionEl');
-  boomHeart(); triggerRipple(); incrementProgress(CURRENT_Q);
+  playReleaseSound(); boomHeart(); triggerRipple(); incrementProgress(CURRENT_Q);
   setTimeout(() => { QUEUE_INDEX++; showNextQuestion(); }, 1800);
 }
 function boomHeart() {
@@ -320,6 +320,74 @@ function updateCounter() {
 document.getElementById('btnCan').addEventListener('click', onAnswer);
 document.getElementById('btnCannot').addEventListener('click', onAnswer);
 loadData();
+
+// ═══════════════════════════════════════════════════════════
+//  SOUND
+// ═══════════════════════════════════════════════════════════
+let audioCtx = null;
+function getAudioCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playReleaseSound() {
+  const ctx = getAudioCtx();
+  const now = ctx.currentTime;
+
+  // 1. 低频心口共鸣 boom
+  const boom = ctx.createOscillator();
+  const boomGain = ctx.createGain();
+  boom.type = 'sine';
+  boom.frequency.setValueAtTime(80, now);
+  boom.frequency.exponentialRampToValueAtTime(40, now + 0.5);
+  boomGain.gain.setValueAtTime(0, now);
+  boomGain.gain.linearRampToValueAtTime(0.55, now + 0.04);
+  boomGain.gain.exponentialRampToValueAtTime(0.001, now + 0.6);
+  boom.connect(boomGain);
+  boomGain.connect(ctx.destination);
+  boom.start(now);
+  boom.stop(now + 0.6);
+
+  // 2. 能量流动：柔和上升气息（噪声 + 滤波）
+  const bufferSize = ctx.sampleRate * 1.2;
+  const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = buffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = Math.random() * 2 - 1;
+  const noise = ctx.createBufferSource();
+  noise.buffer = buffer;
+  const filter = ctx.createBiquadFilter();
+  filter.type = 'bandpass';
+  filter.frequency.setValueAtTime(400, now + 0.1);
+  filter.frequency.exponentialRampToValueAtTime(1800, now + 1.1);
+  filter.Q.value = 1.2;
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0, now + 0.1);
+  noiseGain.gain.linearRampToValueAtTime(0.12, now + 0.3);
+  noiseGain.gain.linearRampToValueAtTime(0.06, now + 0.9);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
+  noise.connect(filter);
+  filter.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+  noise.start(now + 0.1);
+  noise.stop(now + 1.2);
+
+  // 3. 消散余韵：高频晶莹泛音
+  [880, 1320, 1760].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const g = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    const t = now + 0.5 + i * 0.12;
+    g.gain.setValueAtTime(0, t);
+    g.gain.linearRampToValueAtTime(0.06 - i * 0.015, t + 0.08);
+    g.gain.exponentialRampToValueAtTime(0.001, t + 0.9);
+    osc.connect(g);
+    g.connect(ctx.destination);
+    osc.start(t);
+    osc.stop(t + 0.9);
+  });
+}
 </script>
 </body>
 </html>
