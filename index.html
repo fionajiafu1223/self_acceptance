@@ -9,23 +9,16 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html, body {
   width: 100%; height: 100%;
-  background: #fde8f0;
+  background: #fef0e4;
   display: block;
   overflow: hidden;
-}
-body::before {
-  content: ''; position: fixed; inset: 0;
-  background:
-    radial-gradient(ellipse at 30% 20%, rgba(253,232,240,0.7) 0%, transparent 60%),
-    radial-gradient(ellipse at 70% 80%, rgba(248,212,228,0.5) 0%, transparent 60%);
-  pointer-events: none; z-index: 0;
 }
 input, select, textarea, button { font-size: 16px; }
 
 .card {
   position: relative; z-index: 1;
   width: 100vw; height: 100vh;
-  background: linear-gradient(170deg, #fff5f8 0%, #fde8f0 45%, #f8d4e4 100%);
+  background: linear-gradient(170deg, #fff8f2 0%, #feeee2 45%, #fcdeca 100%);
 }
 
 .app-title {
@@ -34,11 +27,11 @@ input, select, textarea, button { font-size: 16px; }
 }
 .app-title h1 {
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
-  letter-spacing: 5px; color: rgba(140,45,65,0.55); font-weight: 400;
+  letter-spacing: 5px; color: rgba(150,70,15,0.55); font-weight: 400;
 }
 .app-title p {
   font-size: 8px; letter-spacing: 2.5px;
-  color: rgba(140,45,65,0.32); margin-top: 3px;
+  color: rgba(150,70,15,0.32); margin-top: 3px;
 }
 
 .svg-canvas {
@@ -51,17 +44,12 @@ input, select, textarea, button { font-size: 16px; }
   top: 17%;
   text-align: center;
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; letter-spacing: 2px;
-  color: rgba(120,40,55,0.75); line-height: 1.9;
+  color: rgba(130,60,10,0.75); line-height: 1.9;
   z-index: 30; opacity: 0; pointer-events: none;
   transition: opacity 1.5s ease;
   padding: 0 36px;
 }
 #questionEl.visible { opacity: 1; }
-#questionEl em {
-  font-style: normal;
-  color: rgba(120,40,55,0.95);
-  font-size: 15px;
-}
 
 .act-btn {
   position: absolute; z-index: 30;
@@ -71,18 +59,18 @@ input, select, textarea, button { font-size: 16px; }
     linear-gradient(to bottom,
       rgba(255,255,255,0.92) 0%,
       rgba(255,255,255,0.78) 45%,
-      rgba(248,225,232,0.72) 100%);
+      rgba(252,230,205,0.72) 100%);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   font-family: 'ZCOOL XiaoWei', serif; font-size: 16px;
-  letter-spacing: 2.5px; color: rgba(140,45,65,0.92);
+  letter-spacing: 2.5px; color: rgba(150,70,15,0.92);
   cursor: pointer; white-space: nowrap;
   opacity: 0; pointer-events: none;
   box-shadow:
-    0 4px 12px rgba(160,30,60,0.15),
-    0 2px 4px rgba(160,30,60,0.08),
+    0 4px 12px rgba(180,90,10,0.15),
+    0 2px 4px rgba(180,90,10,0.08),
     inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 -1px 2px rgba(160,30,60,0.06);
+    inset 0 -1px 2px rgba(180,90,10,0.06);
   transition: opacity 1.5s ease, transform 0.18s ease, background 0.2s ease;
   transform: translate(-50%, -50%);
   top: 65%;
@@ -90,14 +78,14 @@ input, select, textarea, button { font-size: 16px; }
 .act-btn.visible { opacity: 1; pointer-events: auto; }
 .act-btn:active {
   transform: translate(-50%, -50%) scale(0.96);
-  box-shadow: 0 2px 5px rgba(160,30,60,0.15), inset 0 1px 2px rgba(160,30,60,0.10);
+  box-shadow: 0 2px 5px rgba(180,90,10,0.15), inset 0 1px 2px rgba(180,90,10,0.10);
 }
 .act-btn:hover {
   background:
     linear-gradient(to bottom,
       rgba(255,255,255,1) 0%,
-      rgba(255,245,248,0.88) 45%,
-      rgba(242,215,225,0.82) 100%);
+      rgba(255,248,238,0.88) 45%,
+      rgba(248,225,195,0.82) 100%);
 }
 
 #btnCan    { left: calc(50.8% + 56px); }
@@ -105,7 +93,7 @@ input, select, textarea, button { font-size: 16px; }
 
 .ripple-el {
   position: absolute; border-radius: 50%; pointer-events: none; z-index: 6;
-  background: radial-gradient(circle, rgba(220,80,100,0.45) 0%, rgba(220,80,100,0) 70%);
+  background: radial-gradient(circle, rgba(220,130,40,0.38) 0%, rgba(220,130,40,0) 70%);
   animation: rippleRelease 1.5s ease-out forwards;
   transform-origin: center center;
 }
@@ -115,56 +103,32 @@ input, select, textarea, button { font-size: 16px; }
 }
 
 /* ─── heart glow pulse ─── */
-@keyframes heartPulse {
-  0%,100% { opacity: 0.5; }
-  50%     { opacity: 0.9; }
-}
-@keyframes heartPulse2 {
-  0%,100% { opacity: 0.35; }
-  50%     { opacity: 0.75; }
-}
-@keyframes heartPulse3 {
-  0%,100% { opacity: 0.2; }
-  50%     { opacity: 0.5; }
-}
+@keyframes heartPulse  { 0%,100%{opacity:0.50} 50%{opacity:0.90} }
+@keyframes heartPulse2 { 0%,100%{opacity:0.35} 50%{opacity:0.72} }
+@keyframes heartPulse3 { 0%,100%{opacity:0.18} 50%{opacity:0.45} }
 
 #heartLayer circle { transform-origin: 183px 420px; }
 #heartRing1 { animation: heartPulse  3.5s ease-in-out infinite; }
 #heartRing2 { animation: heartPulse2 3.5s ease-in-out infinite 0.3s; }
 #heartRing3 { animation: heartPulse3 3.5s ease-in-out infinite 0.6s; }
 
-@keyframes heartBoom {
-  0%   { transform: scale(1);   opacity: 0.5; }
-  18%  { transform: scale(2.4); opacity: 1; }
-  50%  { transform: scale(1.5); opacity: 0.7; }
-  100% { transform: scale(1);   opacity: 0.5; }
-}
-@keyframes heartBoom2 {
-  0%   { transform: scale(1);   opacity: 0.35; }
-  18%  { transform: scale(2.2); opacity: 0.85; }
-  50%  { transform: scale(1.4); opacity: 0.55; }
-  100% { transform: scale(1);   opacity: 0.35; }
-}
-@keyframes heartBoom3 {
-  0%   { transform: scale(1);   opacity: 0.2; }
-  18%  { transform: scale(2.0); opacity: 0.65; }
-  50%  { transform: scale(1.3); opacity: 0.38; }
-  100% { transform: scale(1);   opacity: 0.2; }
-}
+@keyframes heartBoom  { 0%{transform:scale(1);opacity:0.50} 18%{transform:scale(2.4);opacity:1}   50%{transform:scale(1.5);opacity:0.70} 100%{transform:scale(1);opacity:0.50} }
+@keyframes heartBoom2 { 0%{transform:scale(1);opacity:0.35} 18%{transform:scale(2.2);opacity:0.85} 50%{transform:scale(1.4);opacity:0.55} 100%{transform:scale(1);opacity:0.35} }
+@keyframes heartBoom3 { 0%{transform:scale(1);opacity:0.18} 18%{transform:scale(2.0);opacity:0.65} 50%{transform:scale(1.3);opacity:0.38} 100%{transform:scale(1);opacity:0.18} }
 
 #heartLayer.boom #heartRing1 { animation: heartBoom  1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse  3.5s ease-in-out infinite 1.6s; }
 #heartLayer.boom #heartRing2 { animation: heartBoom2 1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse2 3.5s ease-in-out infinite 1.6s; }
 #heartLayer.boom #heartRing3 { animation: heartBoom3 1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse3 3.5s ease-in-out infinite 1.6s; }
 
 /* ─── body glow ─── */
-@keyframes hg1{0%,100%{opacity:0.06}50%{opacity:0.20}}
-@keyframes hg2{0%,100%{opacity:0.14}50%{opacity:0.45}}
-@keyframes hg3{0%,100%{opacity:0.38}50%{opacity:0.85}}
-@keyframes hcore{0%,100%{opacity:0.50}50%{opacity:0.95}}
-.hg1{animation:hg1 6s ease-in-out infinite;}
-.hg2{animation:hg2 5s ease-in-out infinite 0.5s;}
-.hg3{animation:hg3 4s ease-in-out infinite 1s;}
-.hcore{animation:hcore 4s ease-in-out infinite;}
+@keyframes hg1  { 0%,100%{opacity:0.08} 50%{opacity:0.22} }
+@keyframes hg2  { 0%,100%{opacity:0.16} 50%{opacity:0.48} }
+@keyframes hg3  { 0%,100%{opacity:0.40} 50%{opacity:0.88} }
+@keyframes hcore{ 0%,100%{opacity:0.55} 50%{opacity:1.00} }
+.hg1  { animation: hg1   6s ease-in-out infinite; }
+.hg2  { animation: hg2   5s ease-in-out infinite 0.5s; }
+.hg3  { animation: hg3   4s ease-in-out infinite 1s; }
+.hcore{ animation: hcore 4s ease-in-out infinite; }
 
 #bottomBar {
   position: absolute;
@@ -175,9 +139,9 @@ input, select, textarea, button { font-size: 16px; }
 }
 .bottom-text {
   font-family: 'ZCOOL XiaoWei', serif; font-size: 11px;
-  letter-spacing: 2px; color: rgba(140,45,65,0.50);
+  letter-spacing: 2px; color: rgba(150,70,15,0.50);
 }
-.bottom-divider { width: 1px; height: 11px; background: rgba(140,45,65,0.22); }
+.bottom-divider { width: 1px; height: 11px; background: rgba(150,70,15,0.22); }
 
 .category-trigger {
   position: absolute;
@@ -191,10 +155,10 @@ input, select, textarea, button { font-size: 16px; }
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
   font-family: 'ZCOOL XiaoWei', serif;
   font-size: 12px; letter-spacing: 2px;
-  color: rgba(140,45,65,0.80);
+  color: rgba(150,70,15,0.80);
   cursor: pointer;
-  box-shadow: 0 2px 10px rgba(160,30,60,0.08);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%238c2d41' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
+  box-shadow: 0 2px 10px rgba(180,90,10,0.08);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23964610' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
   background-repeat: no-repeat;
   background-position: right 10px center;
   user-select: none;
@@ -210,9 +174,9 @@ input, select, textarea, button { font-size: 16px; }
   z-index: 101; min-width: 130px;
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.85);
-  background: linear-gradient(158deg, rgba(255,240,245,0.94) 0%, rgba(253,220,232,0.90) 100%);
+  background: linear-gradient(158deg, rgba(255,245,232,0.95) 0%, rgba(252,228,200,0.92) 100%);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 10px 30px rgba(160,30,60,0.14), 0 1px 0 rgba(255,255,255,0.7) inset;
+  box-shadow: 0 10px 30px rgba(180,90,10,0.14), 0 1px 0 rgba(255,255,255,0.7) inset;
   padding: 6px 0;
   opacity: 0; pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
@@ -226,20 +190,20 @@ input, select, textarea, button { font-size: 16px; }
   padding: 10px 28px;
   font-family: 'ZCOOL XiaoWei', serif;
   font-size: 13px; letter-spacing: 3px;
-  color: rgba(140,45,65,0.85);
+  color: rgba(150,70,15,0.85);
   text-align: center; cursor: pointer;
   transition: background 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
 .category-item:hover { background: rgba(255,255,255,0.45); }
-.category-item.selected { background: rgba(255,255,255,0.35); color: rgba(140,45,65,1); }
+.category-item.selected { background: rgba(255,255,255,0.35); color: rgba(150,70,15,1); }
 
 #loadingOverlay {
   position: absolute; inset: 0; z-index: 60;
-  background: linear-gradient(170deg, #fff5f8 0%, #fde8f0 45%, #f8d4e4 100%);
+  background: linear-gradient(170deg, #fff8f2 0%, #feeee2 45%, #fcdeca 100%);
   display: flex; align-items: center; justify-content: center;
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
-  letter-spacing: 3px; color: rgba(140,45,65,0.65);
+  letter-spacing: 3px; color: rgba(150,70,15,0.65);
   transition: opacity 0.4s ease;
 }
 #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
@@ -262,44 +226,44 @@ input, select, textarea, button { font-size: 16px; }
       <filter id="f2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="20"/></filter>
       <filter id="f3" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="36"/></filter>
 
-      <!-- heart glow gradients: red -->
+      <!-- heart glow: orange -->
       <radialGradient id="hgOuter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ff6070" stop-opacity="0.28"/>
-        <stop offset="100%" stop-color="#c01030" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ffaa50" stop-opacity="0.22"/>
+        <stop offset="100%" stop-color="#c06010" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgMid" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ff4060" stop-opacity="0.55"/>
-        <stop offset="55%" stop-color="#d02040" stop-opacity="0.22"/>
-        <stop offset="100%" stop-color="#900020" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ff9030" stop-opacity="0.40"/>
+        <stop offset="55%" stop-color="#d07010" stop-opacity="0.16"/>
+        <stop offset="100%" stop-color="#904000" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgInner" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#ff8090" stop-opacity="0.90"/>
-        <stop offset="45%" stop-color="#e03050" stop-opacity="0.58"/>
-        <stop offset="100%" stop-color="#a01030" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#ffb860" stop-opacity="0.68"/>
+        <stop offset="45%" stop-color="#e08020" stop-opacity="0.38"/>
+        <stop offset="100%" stop-color="#a05010" stop-opacity="0"/>
       </radialGradient>
       <radialGradient id="hgCore" cx="42%" cy="38%" r="55%">
-        <stop offset="0%" stop-color="#ffe0e8" stop-opacity="1"/>
-        <stop offset="38%" stop-color="#ff6070" stop-opacity="0.92"/>
-        <stop offset="100%" stop-color="#c02040" stop-opacity="0"/>
+        <stop offset="0%" stop-color="#fff0d8" stop-opacity="0.85"/>
+        <stop offset="45%" stop-color="#ffaa50" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#c06020" stop-opacity="0"/>
       </radialGradient>
     </defs>
 
-    <!-- Human figure: pink-rose tones -->
+    <!-- Human figure: white glow -->
     <path class="hg1" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(200,80,100,0.28)" stroke-width="80" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f3)"/>
+      stroke="rgba(255,255,255,0.18)" stroke-width="80" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f3)"/>
     <path class="hg2" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(220,110,135,0.42)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f2)"/>
+      stroke="rgba(255,255,255,0.38)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f2)"/>
     <path class="hg3" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(235,160,180,0.65)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f1)"/>
+      stroke="rgba(255,255,255,0.62)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f1)"/>
     <path class="hcore" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(210,140,160,0.55)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      stroke="rgba(255,255,255,0.80)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
 
     <!-- Heart energy glow: 4 layers -->
     <g id="heartLayer">
-      <circle id="heartRing3" cx="183" cy="420" r="90"  fill="url(#hgOuter)"/>
-      <circle id="heartRing2" cx="183" cy="420" r="62"  fill="url(#hgMid)"/>
-      <circle id="heartRing1" cx="183" cy="420" r="40"  fill="url(#hgInner)"/>
-      <circle id="heartCore"  cx="183" cy="420" r="22"  fill="url(#hgCore)"/>
+      <circle id="heartRing3" cx="183" cy="420" r="90" fill="url(#hgOuter)"/>
+      <circle id="heartRing2" cx="183" cy="420" r="62" fill="url(#hgMid)"/>
+      <circle id="heartRing1" cx="183" cy="420" r="40" fill="url(#hgInner)"/>
+      <circle id="heartCore"  cx="183" cy="420" r="22" fill="url(#hgCore)"/>
     </g>
   </svg>
 
@@ -317,12 +281,7 @@ input, select, textarea, button { font-size: 16px; }
 
 <script>
 const STORAGE_KEY = 'sa_progress_v1';
-let DATA = null;
-let CURRENT_QUEUE = [];
-let QUEUE_INDEX = 0;
-let CURRENT_Q = null;
-let CURRENT_CATEGORY = 'all';
-let LOCKED = false;
+let DATA = null, CURRENT_QUEUE = [], QUEUE_INDEX = 0, CURRENT_Q = null, LOCKED = false;
 
 function loadProgress() {
   try {
@@ -337,15 +296,12 @@ function loadProgress() {
 function defaultProgress() {
   return { total: 0, todayCount: 0, todayDate: new Date().toDateString(), byCategory: {}, byDesire: {} };
 }
-function saveProgress(p) {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch(e){}
-}
-function incrementProgress(question) {
+function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch(e){} }
+function incrementProgress(q) {
   const p = loadProgress();
-  p.total += 1; p.todayCount += 1;
-  p.todayDate = new Date().toDateString();
-  p.byCategory[question.category] = (p.byCategory[question.category] || 0) + 1;
-  p.byDesire[question.desire] = (p.byDesire[question.desire] || 0) + 1;
+  p.total++; p.todayCount++; p.todayDate = new Date().toDateString();
+  p.byCategory[q.category] = (p.byCategory[q.category] || 0) + 1;
+  p.byDesire[q.desire] = (p.byDesire[q.desire] || 0) + 1;
   saveProgress(p); updateCounter();
 }
 
@@ -367,10 +323,7 @@ async function loadData() {
 function initCategorySelector() {
   const trigger = document.getElementById('categoryTrigger');
   const menu = document.getElementById('categoryMenu');
-  const items = [
-    { id: 'all', label: '随机' },
-    ...Object.keys(DATA.categories).map(id => ({ id, label: DATA.categories[id].name }))
-  ];
+  const items = [{ id:'all', label:'随机' }, ...Object.keys(DATA.categories).map(id => ({ id, label: DATA.categories[id].name }))];
   let currentId = 'all';
   function buildMenu() {
     menu.innerHTML = '';
@@ -378,37 +331,25 @@ function initCategorySelector() {
       const el = document.createElement('div');
       el.className = 'category-item' + (item.id === currentId ? ' selected' : '');
       el.textContent = item.label;
-      el.onclick = (e) => {
-        e.stopPropagation();
-        currentId = item.id;
-        trigger.textContent = item.label;
-        menu.classList.remove('open');
-        buildMenu();
-        startSession(item.id);
-      };
+      el.onclick = e => { e.stopPropagation(); currentId = item.id; trigger.textContent = item.label; menu.classList.remove('open'); buildMenu(); startSession(item.id); };
       menu.appendChild(el);
     });
   }
   buildMenu();
-  trigger.addEventListener('click', (e) => { e.stopPropagation(); menu.classList.toggle('open'); });
+  trigger.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
   document.addEventListener('click', () => menu.classList.remove('open'));
 }
 
 function startSession(categoryId) {
-  CURRENT_CATEGORY = categoryId;
   let pool = categoryId === 'all' ? DATA.questions.slice() : DATA.questions.filter(q => q.category === categoryId);
-  CURRENT_QUEUE = shuffle(pool);
-  QUEUE_INDEX = 0;
+  CURRENT_QUEUE = shuffle(pool); QUEUE_INDEX = 0;
   hideEl('questionEl'); hideBtn('btnCan'); hideBtn('btnCannot');
   updateCounter(); showNextQuestion();
 }
 
 function shuffle(arr) {
   const a = arr.slice();
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+  for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
 
@@ -416,57 +357,38 @@ function showNextQuestion() {
   if (QUEUE_INDEX >= CURRENT_QUEUE.length) { CURRENT_QUEUE = shuffle(CURRENT_QUEUE); QUEUE_INDEX = 0; }
   CURRENT_Q = CURRENT_QUEUE[QUEUE_INDEX];
   LOCKED = false;
-  const qEl = document.getElementById('questionEl');
-  qEl.textContent = CURRENT_Q.question;
-  setTimeout(() => {
-    showEl('questionEl');
-    setTimeout(() => { showBtn('btnCan'); showBtn('btnCannot'); }, 400);
-  }, 200);
+  document.getElementById('questionEl').textContent = CURRENT_Q.question;
+  setTimeout(() => { showEl('questionEl'); setTimeout(() => { showBtn('btnCan'); showBtn('btnCannot'); }, 400); }, 200);
 }
 
 function onAnswer() {
   if (LOCKED) return;
   LOCKED = true;
   hideBtn('btnCan'); hideBtn('btnCannot'); hideEl('questionEl');
-  boomHeart();
-  triggerRipple();
-  incrementProgress(CURRENT_Q);
-  setTimeout(() => {
-    QUEUE_INDEX += 1;
-    showNextQuestion();
-  }, 1800);
+  boomHeart(); triggerRipple(); incrementProgress(CURRENT_Q);
+  setTimeout(() => { QUEUE_INDEX++; showNextQuestion(); }, 1800);
 }
 
 function boomHeart() {
   const layer = document.getElementById('heartLayer');
-  layer.classList.remove('boom');
-  void layer.offsetWidth;
-  layer.classList.add('boom');
+  layer.classList.remove('boom'); void layer.offsetWidth; layer.classList.add('boom');
 }
 
 function getHeartScreenPos() {
-  const svg = document.getElementById('sv');
-  const rect = svg.getBoundingClientRect();
-  return {
-    x: rect.left + (183 / 360) * rect.width,
-    y: rect.top  + (420 / 640) * rect.height
-  };
+  const svg = document.getElementById('sv'), rect = svg.getBoundingClientRect();
+  return { x: rect.left + (183/360)*rect.width, y: rect.top + (420/640)*rect.height };
 }
 
 function triggerRipple() {
-  const card = document.getElementById('card');
-  const p = getHeartScreenPos();
+  const card = document.getElementById('card'), p = getHeartScreenPos();
   for (let i = 0; i < 3; i++) {
     setTimeout(() => {
       const r = document.createElement('div');
       r.className = 'ripple-el';
-      r.style.left = p.x + 'px';
-      r.style.top  = p.y + 'px';
-      r.style.width = '140px';
-      r.style.height = '140px';
-      card.appendChild(r);
-      setTimeout(() => r.remove(), 1600);
-    }, i * 220);
+      r.style.left = p.x+'px'; r.style.top = p.y+'px';
+      r.style.width = '140px'; r.style.height = '140px';
+      card.appendChild(r); setTimeout(() => r.remove(), 1600);
+    }, i*220);
   }
 }
 
@@ -474,7 +396,6 @@ function showEl(id) { document.getElementById(id).classList.add('visible'); }
 function hideEl(id) { document.getElementById(id).classList.remove('visible'); }
 function showBtn(id) { document.getElementById(id).classList.add('visible'); }
 function hideBtn(id) { document.getElementById(id).classList.remove('visible'); }
-
 function updateCounter() {
   const p = loadProgress();
   document.getElementById('counterText').textContent = '今日 ' + p.todayCount;
@@ -483,7 +404,6 @@ function updateCounter() {
 
 document.getElementById('btnCan').addEventListener('click', onAnswer);
 document.getElementById('btnCannot').addEventListener('click', onAnswer);
-
 loadData();
 </script>
 </body>
