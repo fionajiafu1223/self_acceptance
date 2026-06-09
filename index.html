@@ -7,263 +7,226 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400&family=ZCOOL+XiaoWei&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body {
-  width: 100%; height: 100%;
-  background: #fdd8c0;
-  display: block;
-  overflow: hidden;
-}
+html, body { width: 100%; height: 100%; overflow: hidden; }
 input, select, textarea, button { font-size: 16px; }
 
 .card {
   position: relative; z-index: 1;
   width: 100vw; height: 100vh;
-  background: linear-gradient(170deg, #ffeee0 0%, #fcc8a0 45%, #f0a070 100%);
+  background: linear-gradient(160deg, #fff3e0 0%, #ffe0b2 40%, #ffcc80 100%);
 }
 
 .app-title {
-  position: absolute; top: max(22px, calc(env(safe-area-inset-top, 0px) + 8px)); left: 0; right: 0;
-  text-align: center; z-index: 10; pointer-events: none;
+  position: absolute; top: max(22px, calc(env(safe-area-inset-top,0px) + 8px));
+  left: 0; right: 0; text-align: center; z-index: 10; pointer-events: none;
 }
 .app-title h1 {
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
-  letter-spacing: 5px; color: rgba(160,75,10,0.70); font-weight: 400;
+  letter-spacing: 5px; color: rgba(180,80,10,0.62); font-weight: 400;
 }
 .app-title p {
   font-size: 8px; letter-spacing: 2.5px;
-  color: rgba(160,75,10,0.42); margin-top: 3px;
+  color: rgba(180,80,10,0.38); margin-top: 3px;
 }
 
-.svg-canvas {
-  position: absolute; inset: 0; width: 100%; height: 100%;
-  overflow: visible; z-index: 5; pointer-events: none;
+/* ── silhouette: pure CSS blur, no SVG filter ── */
+.silhouette-wrap {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.silhouette-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+.body-path-outer {
+  stroke: rgba(255,255,255,0.55);
+  stroke-width: 60; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  filter: blur(28px);
+}
+.body-path-mid {
+  stroke: rgba(255,255,255,0.70);
+  stroke-width: 22; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
+  filter: blur(10px);
+}
+.body-path-edge {
+  stroke: rgba(255,255,255,0.88);
+  stroke-width: 2.5; fill: none;
+  stroke-linecap: round; stroke-linejoin: round;
 }
 
+@keyframes hpulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+.body-path-outer { animation: hpulse 5s ease-in-out infinite; }
+.body-path-mid   { animation: hpulse 4s ease-in-out infinite 0.5s; }
+.body-path-edge  { animation: hpulse 4s ease-in-out infinite 1s; }
+
+/* ── heart glow ── */
+.heart-wrap {
+  position: absolute; inset: 0; z-index: 6; pointer-events: none;
+  display: flex; align-items: center; justify-content: center;
+}
+.heart-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+#heartLayer circle { transform-box: fill-box; transform-origin: center; }
+
+@keyframes heartPulse  { 0%,100%{opacity:0.45} 50%{opacity:0.88} }
+@keyframes heartPulse2 { 0%,100%{opacity:0.28} 50%{opacity:0.65} }
+#heartRing1 { animation: heartPulse  3.5s ease-in-out infinite; }
+#heartRing2 { animation: heartPulse2 3.5s ease-in-out infinite 0.4s; }
+
+@keyframes heartBoom  { 0%{transform:scale(1);opacity:0.45} 16%{transform:scale(2.6);opacity:1} 55%{transform:scale(1.6);opacity:0.65} 100%{transform:scale(1);opacity:0.45} }
+@keyframes heartBoom2 { 0%{transform:scale(1);opacity:0.28} 16%{transform:scale(2.3);opacity:0.85} 55%{transform:scale(1.4);opacity:0.48} 100%{transform:scale(1);opacity:0.28} }
+#heartLayer.boom #heartRing1 { animation: heartBoom  1.8s cubic-bezier(0.16,1,0.3,1) 1, heartPulse  3.5s ease-in-out infinite 1.8s; }
+#heartLayer.boom #heartRing2 { animation: heartBoom2 1.8s cubic-bezier(0.16,1,0.3,1) 1, heartPulse2 3.5s ease-in-out infinite 1.8s; }
+
+/* ── question ── */
 #questionEl {
-  position: absolute; left: 0; right: 0;
-  top: 17%;
+  position: absolute; left: 0; right: 0; top: 17%;
   text-align: center;
-  font-family: 'ZCOOL XiaoWei', serif; font-size: 13px; letter-spacing: 2px;
-  color: rgba(140,60,5,0.82); line-height: 1.9;
+  font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
+  letter-spacing: 2px; color: rgba(160,65,5,0.80); line-height: 1.9;
   z-index: 30; opacity: 0; pointer-events: none;
-  transition: opacity 1.5s ease;
-  padding: 0 36px;
+  transition: opacity 1.5s ease; padding: 0 36px;
 }
 #questionEl.visible { opacity: 1; }
 
+/* ── buttons ── */
 .act-btn {
   position: absolute; z-index: 30;
   padding: 9px 22px; border-radius: 99px;
   border: 1px solid rgba(255,255,255,0.95);
-  background:
-    linear-gradient(to bottom,
-      rgba(255,255,255,0.92) 0%,
-      rgba(255,255,255,0.78) 45%,
-      rgba(252,230,205,0.72) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: linear-gradient(to bottom,
+    rgba(255,255,255,0.94) 0%,
+    rgba(255,255,255,0.80) 45%,
+    rgba(255,220,170,0.75) 100%);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
   font-family: 'ZCOOL XiaoWei', serif; font-size: 16px;
-  letter-spacing: 2.5px; color: rgba(150,70,15,0.92);
+  letter-spacing: 2.5px; color: rgba(180,80,10,0.92);
   cursor: pointer; white-space: nowrap;
   opacity: 0; pointer-events: none;
-  box-shadow:
-    0 4px 12px rgba(180,90,10,0.15),
-    0 2px 4px rgba(180,90,10,0.08),
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 -1px 2px rgba(180,90,10,0.06);
-  transition: opacity 1.5s ease, transform 0.18s ease, background 0.2s ease;
-  transform: translate(-50%, -50%);
-  top: 65%;
+  box-shadow: 0 4px 14px rgba(200,90,10,0.18), inset 0 1px 0 rgba(255,255,255,1);
+  transition: opacity 1.5s ease, transform 0.18s ease;
+  transform: translate(-50%, -50%); top: 65%;
 }
 .act-btn.visible { opacity: 1; pointer-events: auto; }
-.act-btn:active {
-  transform: translate(-50%, -50%) scale(0.96);
-  box-shadow: 0 2px 5px rgba(180,90,10,0.15), inset 0 1px 2px rgba(180,90,10,0.10);
-}
-.act-btn:hover {
-  background:
-    linear-gradient(to bottom,
-      rgba(255,255,255,1) 0%,
-      rgba(255,248,238,0.88) 45%,
-      rgba(248,225,195,0.82) 100%);
-}
+.act-btn:active  { transform: translate(-50%,-50%) scale(0.96); }
 
-#btnCan    { left: calc(50.8% + 56px); }
-#btnCannot { left: calc(50.8% - 56px); }
+#btnCan    { left: calc(50% + 56px); }
+#btnCannot { left: calc(50% - 56px); }
 
+/* ── ripple ── */
 .ripple-el {
-  position: absolute; border-radius: 50%; pointer-events: none; z-index: 6;
-  background: radial-gradient(circle, rgba(220,70,20,0.45) 0%, rgba(220,70,20,0) 70%);
-  animation: rippleRelease 1.5s ease-out forwards;
-  transform-origin: center center;
+  position: absolute; border-radius: 50%; pointer-events: none; z-index: 7;
+  background: radial-gradient(circle, rgba(255,140,0,0.40) 0%, rgba(255,140,0,0) 70%);
+  animation: rippleRelease 1.6s ease-out forwards;
 }
 @keyframes rippleRelease {
-  0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.75; }
-  100% { transform: translate(-50%,-50%) scale(4.5); opacity: 0; }
+  0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.8; }
+  100% { transform: translate(-50%,-50%) scale(5);   opacity: 0; }
 }
 
-/* ─── heart glow pulse ─── */
-@keyframes heartPulse  { 0%,100%{opacity:0.50} 50%{opacity:0.90} }
-@keyframes heartPulse2 { 0%,100%{opacity:0.35} 50%{opacity:0.72} }
-@keyframes heartPulse3 { 0%,100%{opacity:0.18} 50%{opacity:0.45} }
-
-#heartLayer circle { transform-origin: 183px 420px; }
-#heartRing1 { animation: heartPulse  3.5s ease-in-out infinite; }
-#heartRing2 { animation: heartPulse2 3.5s ease-in-out infinite 0.3s; }
-#heartRing3 { animation: heartPulse3 3.5s ease-in-out infinite 0.6s; }
-
-@keyframes heartBoom  { 0%{transform:scale(1);opacity:0.50} 18%{transform:scale(2.4);opacity:1}   50%{transform:scale(1.5);opacity:0.70} 100%{transform:scale(1);opacity:0.50} }
-@keyframes heartBoom2 { 0%{transform:scale(1);opacity:0.35} 18%{transform:scale(2.2);opacity:0.85} 50%{transform:scale(1.4);opacity:0.55} 100%{transform:scale(1);opacity:0.35} }
-@keyframes heartBoom3 { 0%{transform:scale(1);opacity:0.18} 18%{transform:scale(2.0);opacity:0.65} 50%{transform:scale(1.3);opacity:0.38} 100%{transform:scale(1);opacity:0.18} }
-
-#heartLayer.boom #heartRing1 { animation: heartBoom  1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse  3.5s ease-in-out infinite 1.6s; }
-#heartLayer.boom #heartRing2 { animation: heartBoom2 1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse2 3.5s ease-in-out infinite 1.6s; }
-#heartLayer.boom #heartRing3 { animation: heartBoom3 1.6s cubic-bezier(0.16,1,0.3,1) 1, heartPulse3 3.5s ease-in-out infinite 1.6s; }
-
-/* ─── body glow ─── */
-@keyframes hg1  { 0%,100%{opacity:0.08} 50%{opacity:0.22} }
-@keyframes hg2  { 0%,100%{opacity:0.16} 50%{opacity:0.48} }
-@keyframes hg3  { 0%,100%{opacity:0.40} 50%{opacity:0.88} }
-@keyframes hcore{ 0%,100%{opacity:0.55} 50%{opacity:1.00} }
-.hg1  { animation: hg1   6s ease-in-out infinite; }
-.hg2  { animation: hg2   5s ease-in-out infinite 0.5s; }
-.hg3  { animation: hg3   4s ease-in-out infinite 1s; }
-.hcore{ animation: hcore 4s ease-in-out infinite; }
-
+/* ── bottom bar ── */
 #bottomBar {
-  position: absolute;
-  bottom: max(36px, env(safe-area-inset-bottom, 36px));
+  position: absolute; bottom: max(36px, env(safe-area-inset-bottom,36px));
   left: 50%; transform: translateX(-50%);
   z-index: 30; display: flex; align-items: center; gap: 14px;
   white-space: nowrap; pointer-events: none;
 }
 .bottom-text {
   font-family: 'ZCOOL XiaoWei', serif; font-size: 11px;
-  letter-spacing: 2px; color: rgba(150,70,15,0.50);
+  letter-spacing: 2px; color: rgba(180,80,10,0.50);
 }
-.bottom-divider { width: 1px; height: 11px; background: rgba(150,70,15,0.22); }
+.bottom-divider { width: 1px; height: 11px; background: rgba(180,80,10,0.22); }
 
+/* ── category selector ── */
 .category-trigger {
   position: absolute;
-  top: max(56px, calc(env(safe-area-inset-top, 0px) + 44px));
+  top: max(56px, calc(env(safe-area-inset-top,0px) + 44px));
   left: 50%; transform: translateX(-50%);
-  z-index: 100;
-  padding: 6px 26px 6px 14px;
-  border-radius: 99px;
-  border: 1px solid rgba(255,255,255,0.85);
-  background: rgba(255,255,255,0.30);
+  z-index: 100; padding: 6px 26px 6px 14px; border-radius: 99px;
+  border: 1px solid rgba(255,255,255,0.88);
+  background: rgba(255,255,255,0.32);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-  font-family: 'ZCOOL XiaoWei', serif;
-  font-size: 12px; letter-spacing: 2px;
-  color: rgba(150,70,15,0.80);
-  cursor: pointer;
-  box-shadow: 0 2px 10px rgba(180,90,10,0.08);
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23964610' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  transition: background-color 0.2s;
+  font-family: 'ZCOOL XiaoWei', serif; font-size: 12px;
+  letter-spacing: 2px; color: rgba(180,80,10,0.80);
+  cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 2px 10px rgba(200,90,10,0.10);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%23b45008' stroke-width='1.4' fill='none' stroke-linecap='round'/></svg>");
+  background-repeat: no-repeat; background-position: right 10px center;
 }
-.category-trigger:hover { background-color: rgba(255,255,255,0.48); }
-
 .category-menu {
   position: absolute;
-  top: calc(max(56px, calc(env(safe-area-inset-top, 0px) + 44px)) + 36px);
-  left: 50%; transform: translateX(-50%);
-  z-index: 101; min-width: 130px;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.85);
-  background: linear-gradient(158deg, rgba(255,245,232,0.95) 0%, rgba(252,228,200,0.92) 100%);
+  top: calc(max(56px, calc(env(safe-area-inset-top,0px) + 44px)) + 36px);
+  left: 50%; z-index: 101; min-width: 130px; border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.88);
+  background: linear-gradient(158deg, rgba(255,248,235,0.96) 0%, rgba(255,224,160,0.92) 100%);
   backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 10px 30px rgba(180,90,10,0.14), 0 1px 0 rgba(255,255,255,0.7) inset;
-  padding: 6px 0;
-  opacity: 0; pointer-events: none;
+  box-shadow: 0 10px 30px rgba(200,90,10,0.16), inset 0 1px 0 rgba(255,255,255,0.7);
+  padding: 6px 0; opacity: 0; pointer-events: none;
   transition: opacity 0.25s ease, transform 0.25s ease;
   transform: translateX(-50%) translateY(-6px);
 }
-.category-menu.open {
-  opacity: 1; pointer-events: auto;
-  transform: translateX(-50%) translateY(0);
-}
+.category-menu.open { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
 .category-item {
-  padding: 10px 28px;
-  font-family: 'ZCOOL XiaoWei', serif;
-  font-size: 13px; letter-spacing: 3px;
-  color: rgba(150,70,15,0.85);
-  text-align: center; cursor: pointer;
-  transition: background 0.15s;
+  padding: 10px 28px; font-family: 'ZCOOL XiaoWei', serif;
+  font-size: 13px; letter-spacing: 3px; color: rgba(180,80,10,0.85);
+  text-align: center; cursor: pointer; transition: background 0.15s;
   -webkit-tap-highlight-color: transparent;
 }
-.category-item:hover { background: rgba(255,255,255,0.45); }
-.category-item.selected { background: rgba(255,255,255,0.35); color: rgba(150,70,15,1); }
+.category-item:hover   { background: rgba(255,255,255,0.45); }
+.category-item.selected{ background: rgba(255,255,255,0.35); color: rgba(180,80,10,1); }
 
+/* ── loading ── */
 #loadingOverlay {
   position: absolute; inset: 0; z-index: 60;
-  background: linear-gradient(170deg, #ffeee0 0%, #fcc8a0 45%, #f0a070 100%);
+  background: linear-gradient(160deg, #fff3e0 0%, #ffe0b2 40%, #ffcc80 100%);
   display: flex; align-items: center; justify-content: center;
   font-family: 'ZCOOL XiaoWei', serif; font-size: 13px;
-  letter-spacing: 3px; color: rgba(150,70,15,0.65);
+  letter-spacing: 3px; color: rgba(180,80,10,0.65);
   transition: opacity 0.4s ease;
 }
 #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
 </style>
 </head>
 <body>
-
 <div class="card" id="card">
   <div class="app-title">
     <h1>自我接纳释放</h1>
     <p>觉察 · 允许 · 释放</p>
   </div>
+
   <div class="category-trigger" id="categoryTrigger">随机</div>
   <div class="category-menu" id="categoryMenu"></div>
   <div id="questionEl"></div>
 
-  <svg class="svg-canvas" id="sv" viewBox="0 0 360 640">
-    <defs id="svgDefs">
-      <filter id="f1" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="10"/></filter>
-      <filter id="f2" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="20"/></filter>
-      <filter id="f3" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="36"/></filter>
+  <!-- body silhouette -->
+  <div class="silhouette-wrap">
+    <svg viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg">
+      <path class="body-path-outer" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"/>
+      <path class="body-path-mid"   d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"/>
+      <path class="body-path-edge"  d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"/>
+    </svg>
+  </div>
 
-      <!-- heart glow: orange -->
-      <radialGradient id="hgOuter" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#f06020" stop-opacity="0.38"/>
-        <stop offset="100%" stop-color="#a02000" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="hgMid" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#e84010" stop-opacity="0.58"/>
-        <stop offset="55%" stop-color="#b83000" stop-opacity="0.24"/>
-        <stop offset="100%" stop-color="#782000" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="hgInner" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#f07040" stop-opacity="0.80"/>
-        <stop offset="45%" stop-color="#d04818" stop-opacity="0.48"/>
-        <stop offset="100%" stop-color="#903010" stop-opacity="0"/>
-      </radialGradient>
-      <radialGradient id="hgCore" cx="42%" cy="38%" r="55%">
-        <stop offset="0%" stop-color="#ffe8d8" stop-opacity="0.92"/>
-        <stop offset="45%" stop-color="#f07030" stop-opacity="0.68"/>
-        <stop offset="100%" stop-color="#a03010" stop-opacity="0"/>
-      </radialGradient>
-    </defs>
-
-    <!-- Human figure: white glow -->
-    <path class="hg1" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(255,255,255,0.18)" stroke-width="80" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f3)"/>
-    <path class="hg2" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(255,255,255,0.38)" stroke-width="32" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f2)"/>
-    <path class="hg3" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(255,255,255,0.62)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round" fill="none" filter="url(#f1)"/>
-    <path class="hcore" d="M330 580 C330 490 320 410 312 372 C303 333 272 323 247 318 C222 313 210 303 210 276 C210 261 210 248 219 239 C241 213 232 143 183 143 C134 143 125 213 147 239 C156 248 156 261 156 276 C156 303 144 313 119 318 C94 323 63 333 54 372 C45 411 36 490 36 580"
-      stroke="rgba(255,255,255,0.80)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-
-    <!-- Heart energy glow: 4 layers -->
-    <g id="heartLayer">
-      <circle id="heartRing3" cx="183" cy="420" r="90" fill="url(#hgOuter)"/>
-      <circle id="heartRing2" cx="183" cy="420" r="62" fill="url(#hgMid)"/>
-    </g>
-  </svg>
+  <!-- heart glow -->
+  <div class="heart-wrap">
+    <svg viewBox="0 0 360 640" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hgOuter" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ff8c00" stop-opacity="0.42"/>
+          <stop offset="100%" stop-color="#e65000" stop-opacity="0"/>
+        </radialGradient>
+        <radialGradient id="hgMid" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"   stop-color="#ff7000" stop-opacity="0.55"/>
+          <stop offset="60%"  stop-color="#cc4400" stop-opacity="0.18"/>
+          <stop offset="100%" stop-color="#882200" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <g id="heartLayer">
+        <circle id="heartRing2" cx="183" cy="420" r="88" fill="url(#hgOuter)"/>
+        <circle id="heartRing1" cx="183" cy="420" r="55" fill="url(#hgMid)"/>
+      </g>
+    </svg>
+  </div>
 
   <button class="act-btn" id="btnCan">允许</button>
   <button class="act-btn" id="btnCannot">不允许</button>
@@ -274,7 +237,6 @@ input, select, textarea, button { font-size: 16px; }
     <span class="bottom-text" id="totalText">累计 0</span>
   </div>
 </div>
-
 <div id="loadingOverlay">加载中…</div>
 
 <script>
@@ -284,37 +246,30 @@ let DATA = null, CURRENT_QUEUE = [], QUEUE_INDEX = 0, CURRENT_Q = null, LOCKED =
 function loadProgress() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return defaultProgress();
+    if (!raw) return def();
     const p = JSON.parse(raw);
-    const today = new Date().toDateString();
-    if (p.todayDate !== today) { p.todayCount = 0; p.todayDate = today; }
+    if (p.todayDate !== new Date().toDateString()) { p.todayCount = 0; p.todayDate = new Date().toDateString(); }
     return p;
-  } catch(e) { return defaultProgress(); }
+  } catch(e) { return def(); }
 }
-function defaultProgress() {
-  return { total: 0, todayCount: 0, todayDate: new Date().toDateString(), byCategory: {}, byDesire: {} };
-}
+function def() { return { total:0, todayCount:0, todayDate: new Date().toDateString(), byCategory:{}, byDesire:{} }; }
 function saveProgress(p) { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(p)); } catch(e){} }
 function incrementProgress(q) {
-  const p = loadProgress();
-  p.total++; p.todayCount++; p.todayDate = new Date().toDateString();
-  p.byCategory[q.category] = (p.byCategory[q.category] || 0) + 1;
-  p.byDesire[q.desire] = (p.byDesire[q.desire] || 0) + 1;
+  const p = loadProgress(); p.total++; p.todayCount++; p.todayDate = new Date().toDateString();
+  p.byCategory[q.category] = (p.byCategory[q.category]||0)+1;
+  p.byDesire[q.desire] = (p.byDesire[q.desire]||0)+1;
   saveProgress(p); updateCounter();
 }
 
 async function loadData() {
   try {
     const res = await fetch('acceptance.json');
-    if (!res.ok) throw new Error('fetch failed');
+    if (!res.ok) throw new Error();
     DATA = await res.json();
     document.getElementById('loadingOverlay').classList.add('hidden');
-    initCategorySelector();
-    startSession('all');
+    initCategorySelector(); startSession('all');
   } catch(e) {
-    document.getElementById('loadingOverlay').innerHTML =
-      '题库加载失败<br><small style="font-size:11px;">请检查 acceptance.json 是否就位</small>';
-    console.error(e);
+    document.getElementById('loadingOverlay').innerHTML = '题库加载失败<br><small style="font-size:11px;">请检查 acceptance.json 是否就位</small>';
   }
 }
 
@@ -322,27 +277,20 @@ function initCategorySelector() {
   const trigger = document.getElementById('categoryTrigger');
   const menu = document.getElementById('categoryMenu');
   const items = [{ id:'all', label:'随机' }, ...Object.keys(DATA.categories).map(id => ({ id, label: DATA.categories[id].name }))];
-  let currentId = 'all';
-  function buildMenu() {
+  let cur = 'all';
+  function build() {
     menu.innerHTML = '';
     items.forEach(item => {
       const el = document.createElement('div');
-      el.className = 'category-item' + (item.id === currentId ? ' selected' : '');
+      el.className = 'category-item' + (item.id === cur ? ' selected' : '');
       el.textContent = item.label;
-      el.onclick = e => { e.stopPropagation(); currentId = item.id; trigger.textContent = item.label; menu.classList.remove('open'); buildMenu(); startSession(item.id); };
+      el.onclick = e => { e.stopPropagation(); cur = item.id; trigger.textContent = item.label; menu.classList.remove('open'); build(); startSession(item.id); };
       menu.appendChild(el);
     });
   }
-  buildMenu();
+  build();
   trigger.addEventListener('click', e => { e.stopPropagation(); menu.classList.toggle('open'); });
   document.addEventListener('click', () => menu.classList.remove('open'));
-}
-
-function startSession(categoryId) {
-  let pool = categoryId === 'all' ? DATA.questions.slice() : DATA.questions.filter(q => q.category === categoryId);
-  CURRENT_QUEUE = shuffle(pool); QUEUE_INDEX = 0;
-  hideEl('questionEl'); hideBtn('btnCan'); hideBtn('btnCannot');
-  updateCounter(); showNextQuestion();
 }
 
 function shuffle(arr) {
@@ -350,56 +298,50 @@ function shuffle(arr) {
   for (let i = a.length-1; i > 0; i--) { const j = Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; }
   return a;
 }
-
+function startSession(cat) {
+  let pool = cat === 'all' ? DATA.questions.slice() : DATA.questions.filter(q => q.category === cat);
+  CURRENT_QUEUE = shuffle(pool); QUEUE_INDEX = 0;
+  hideEl('questionEl'); hideBtn('btnCan'); hideBtn('btnCannot');
+  updateCounter(); showNextQuestion();
+}
 function showNextQuestion() {
   if (QUEUE_INDEX >= CURRENT_QUEUE.length) { CURRENT_QUEUE = shuffle(CURRENT_QUEUE); QUEUE_INDEX = 0; }
-  CURRENT_Q = CURRENT_QUEUE[QUEUE_INDEX];
-  LOCKED = false;
+  CURRENT_Q = CURRENT_QUEUE[QUEUE_INDEX]; LOCKED = false;
   document.getElementById('questionEl').textContent = CURRENT_Q.question;
   setTimeout(() => { showEl('questionEl'); setTimeout(() => { showBtn('btnCan'); showBtn('btnCannot'); }, 400); }, 200);
 }
-
 function onAnswer() {
-  if (LOCKED) return;
-  LOCKED = true;
+  if (LOCKED) return; LOCKED = true;
   hideBtn('btnCan'); hideBtn('btnCannot'); hideEl('questionEl');
   boomHeart(); triggerRipple(); incrementProgress(CURRENT_Q);
   setTimeout(() => { QUEUE_INDEX++; showNextQuestion(); }, 1800);
 }
-
 function boomHeart() {
-  const layer = document.getElementById('heartLayer');
-  layer.classList.remove('boom'); void layer.offsetWidth; layer.classList.add('boom');
+  const l = document.getElementById('heartLayer');
+  l.classList.remove('boom'); void l.offsetWidth; l.classList.add('boom');
 }
-
-function getHeartScreenPos() {
-  const svg = document.getElementById('sv'), rect = svg.getBoundingClientRect();
-  return { x: rect.left + (183/360)*rect.width, y: rect.top + (420/640)*rect.height };
+function getHeartPos() {
+  const card = document.getElementById('card'), r = card.getBoundingClientRect();
+  return { x: r.left + r.width * 0.508, y: r.top + r.height * (420/640) };
 }
-
 function triggerRipple() {
-  const card = document.getElementById('card'), p = getHeartScreenPos();
-  for (let i = 0; i < 3; i++) {
-    setTimeout(() => {
-      const r = document.createElement('div');
-      r.className = 'ripple-el';
-      r.style.left = p.x+'px'; r.style.top = p.y+'px';
-      r.style.width = '140px'; r.style.height = '140px';
-      card.appendChild(r); setTimeout(() => r.remove(), 1600);
-    }, i*220);
-  }
+  const card = document.getElementById('card'), p = getHeartPos();
+  for (let i = 0; i < 3; i++) setTimeout(() => {
+    const r = document.createElement('div');
+    r.className = 'ripple-el';
+    r.style.cssText = `left:${p.x}px;top:${p.y}px;width:150px;height:150px`;
+    card.appendChild(r); setTimeout(() => r.remove(), 1700);
+  }, i * 230);
 }
-
-function showEl(id) { document.getElementById(id).classList.add('visible'); }
-function hideEl(id) { document.getElementById(id).classList.remove('visible'); }
+function showEl(id)  { document.getElementById(id).classList.add('visible'); }
+function hideEl(id)  { document.getElementById(id).classList.remove('visible'); }
 function showBtn(id) { document.getElementById(id).classList.add('visible'); }
 function hideBtn(id) { document.getElementById(id).classList.remove('visible'); }
 function updateCounter() {
   const p = loadProgress();
   document.getElementById('counterText').textContent = '今日 ' + p.todayCount;
-  document.getElementById('totalText').textContent = '累计 ' + p.total;
+  document.getElementById('totalText').textContent   = '累计 ' + p.total;
 }
-
 document.getElementById('btnCan').addEventListener('click', onAnswer);
 document.getElementById('btnCannot').addEventListener('click', onAnswer);
 loadData();
